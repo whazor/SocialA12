@@ -1,0 +1,100 @@
+﻿@model Website.Models.Enrollment
+@{
+  ViewBag.Title = "Registreren";
+}
+<div class="content">
+  <div class="page-header">
+    <h1>Welkom!</h1>
+  </div>
+  @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-stacked" }))
+  {
+    <fieldset>
+      <div class="clearfix">
+        <label for="firstname">Wat is jouw naam?</label>
+        <div class="input">
+          @Html.TextBoxFor(model => model.FirstName, new { placeholder = "Voornaam", required = true })
+          @Html.TextBoxFor(model => model.MiddleName, new { placeholder = "Tussennaam", @class = "small" })
+          @Html.TextBoxFor(model => model.LastName, new { placeholder = "Achternaam", required = true })
+
+          @Html.ValidationMessageFor(model => model.FirstName)
+          @Html.ValidationMessageFor(model => model.MiddleName)
+          @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+      </div>
+      <div class="clearfix">
+        <label for="school">Op welke school zit je?</label>
+        <script>
+          $(function () {
+            var scholen = [
+            "Amadeus Lyceum",
+            "College Weert"
+            ];
+            $("#school").autocomplete({ source: scholen });
+          });</script>
+        @Html.TextBoxFor(model => model.School, new { placeholder = "School", required = true, @class = "large" })
+        
+        @Html.ValidationMessageFor(model => model.School)
+      </div>
+      <div class="clearfix">
+        <label>Hoe kunnen we je bereiken?</label>
+        <script>
+          $(function (){ $('.fbuser').hide(); });
+          FB.Event.subscribe('auth.login', function (response) {
+            FB.api('/me', function (user) {
+              if (!user) return;
+
+              // Set values
+              $('[name=FirstName]').val(user.first_name);
+              $('[name=MiddleName]').val(user.middle_name);
+              $('[name=LastName]').val(user.last_name);
+              $('[name=FacebookID]').val(user.id);
+              $('#Email').val('');
+              $('#Email').attr('disabled', true);
+
+              // Set school value
+              var length = user.education ? user.education.length : 0;
+              for (var i = 0; i < length; i++) {
+                var education = user.education[i];
+                if (education.type == "High School")
+                  $('[name=School]').val(education.school.name);
+              }
+
+              // Set Facebook info
+              $('.fbuser .image').attr('src', 'http://graph.facebook.com/' + user.id + '/picture');
+              $('.fbuser .name').text(user.name);
+
+              $('.fbuser').show();
+              // Hide login button
+              $('#button').hide();
+            });
+          });
+          FB.Event.subscribe('auth.logout', function (response) {
+            // Hide Facebook info
+            $('.fbuser .image').attr('src', '');
+            $('.fbuser .name').text('');
+            $('.fbuser').hide();
+            // Show login button
+            $('#button').show();
+            
+            // Reset values
+            $('[name=FacebookID]').val('');
+            $('#Email').attr('disabled', false);
+          });</script>
+        <div class="fbuser hidden clearfix">
+          <img class="image" /> <span class="name"></span>
+        </div>
+        @Html.HiddenFor(model => model.FacebookID)
+        <div id="button">
+          <fb:login-button></fb:login-button>
+        </div>
+        <div style="margin: 10px 0px;">
+          <span>of met e-mail:</span>
+        </div>
+        @Html.TextBoxFor(model => model.Email, new { placeholder = "E-mail", required = true, @class = "large" })
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn primary">Registeren</button>
+    <button type="reset" class="btn cancel" onclick="FB.logout()">Annuleren</button>
+  }
+</div>

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{00000000-0000-0000-0000-000000000000}") = "Website", "Website\Website.csproj", "{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website.Tests", "Website.Tests\Website.Tests.csproj", "{5F766C63-9656-453E-91AE-F3F59B8A23EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F766C63-9656-453E-91AE-F3F59B8A23EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F766C63-9656-453E-91AE-F3F59B8A23EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F766C63-9656-453E-91AE-F3F59B8A23EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F766C63-9656-453E-91AE-F3F59B8A23EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
