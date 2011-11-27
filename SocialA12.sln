@@ -1,9 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 11
-Project("{00000000-0000-0000-0000-000000000000}") = "Website", "Website\Website.csproj", "{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "Website\Website.csproj", "{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website.Tests", "Website.Tests\Website.Tests.csproj", "{5F766C63-9656-453E-91AE-F3F59B8A23EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printer", "Printer\Printer.csproj", "{B917B3EC-3771-4596-84A2-94F01B18B2B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{BE1455E8-EFC3-459C-BC81-0D82E1C03728}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{2E73836F-A430-4B74-B3D3-9A27CE76F9DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{4E447359-32ED-4DE8-BC3A-6BE169F877AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialDB", "SocialDB\SocialDB.csproj", "{84D118BB-3688-489F-B282-FEEDCAFB69C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,8 +29,22 @@ Global
 		{5F766C63-9656-453E-91AE-F3F59B8A23EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F766C63-9656-453E-91AE-F3F59B8A23EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F766C63-9656-453E-91AE-F3F59B8A23EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84D118BB-3688-489F-B282-FEEDCAFB69C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84D118BB-3688-489F-B282-FEEDCAFB69C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84D118BB-3688-489F-B282-FEEDCAFB69C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84D118BB-3688-489F-B282-FEEDCAFB69C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B917B3EC-3771-4596-84A2-94F01B18B2B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B917B3EC-3771-4596-84A2-94F01B18B2B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B917B3EC-3771-4596-84A2-94F01B18B2B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B917B3EC-3771-4596-84A2-94F01B18B2B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{50E368E9-0A66-4BF6-AEDB-B8DA1EBCE957} = {4E447359-32ED-4DE8-BC3A-6BE169F877AE}
+		{5F766C63-9656-453E-91AE-F3F59B8A23EE} = {4E447359-32ED-4DE8-BC3A-6BE169F877AE}
+		{84D118BB-3688-489F-B282-FEEDCAFB69C8} = {2E73836F-A430-4B74-B3D3-9A27CE76F9DC}
+		{B917B3EC-3771-4596-84A2-94F01B18B2B1} = {BE1455E8-EFC3-459C-BC81-0D82E1C03728}
 	EndGlobalSection
 EndGlobal

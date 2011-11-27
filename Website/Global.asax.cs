@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Data.Entity;
 using Website.Models;
-using Website.DAL;
 
 namespace Website
 {
@@ -23,21 +22,21 @@ namespace Website
     public static void RegisterRoutes(RouteCollection routes)
     {
       routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-      /*routes.MapRoute("",
+      routes.MapRoute("Signup",
         "Signup",
-        new { controller = "Home", action = "Signup" }
-      );*/
+        new { controller = "Enrollment", action = "Create" }
+      );
       routes.MapRoute(
-          "Default", // Route name
-          "{controller}/{action}/{id}", // URL with parameters
-          new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+        "Default", // Route name
+        "{controller}/{action}/{id}", // URL with parameters
+        new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
       );
 
     }
 
     protected void Application_Start()
     {
-      Database.SetInitializer(new SocialInitializer());
+      System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Website.SocialContext>());
       AreaRegistration.RegisterAllAreas();
 
       RegisterGlobalFilters(GlobalFilters.Filters);

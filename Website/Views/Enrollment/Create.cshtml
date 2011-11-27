@@ -1,73 +1,102 @@
 ﻿@model Website.Models.Enrollment
-
 @{
-    ViewBag.Title = "Create";
+  ViewBag.Title = "Registreren";
 }
-
-<h2>Create</h2>
-
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
+<div class="content">
+  <div class="page-header">
+    <h1>Welkom!</h1>
+  </div>
+  @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-stacked" }))
+  {
     <fieldset>
-        <legend>Enrollment</legend>
+      <div class="clearfix">
+        <label for="firstname">Wat is jouw naam?</label>
+        <div class="input">
+          @Html.TextBoxFor(model => model.FirstName, new { placeholder = "Voornaam", required = true })
+          @Html.TextBoxFor(model => model.MiddleName, new { placeholder = "Tussennaam", @class = "small" })
+          @Html.TextBoxFor(model => model.LastName, new { placeholder = "Achternaam", required = true })
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FirstName)
+          @Html.ValidationMessageFor(model => model.FirstName)
+          @Html.ValidationMessageFor(model => model.MiddleName)
+          @Html.ValidationMessageFor(model => model.LastName)
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FirstName)
-            @Html.ValidationMessageFor(model => model.FirstName)
-        </div>
+      </div>
+      <div class="clearfix">
+        <label for="school">Op welke school zit je?</label>
+        <script>
+          $(function () {
+            var scholen = [
+            "Amadeus Lyceum",
+            "College Weert"
+            ];
+            $("#school").autocomplete({ source: scholen });
+          });</script>
+        @Html.TextBoxFor(model => model.School, new { placeholder = "School", required = true, @class = "large" })
+        
+        @Html.ValidationMessageFor(model => model.School)
+      </div>
+      <div class="clearfix">
+        <label>Hoe kunnen we je bereiken?</label>
+        <script>
+          $(function (){ $('.fbuser').hide(); fillUser(); });
+          function fillUser() {
+            FB.api('/me', function (user) {
+              if (user.error) {
+                FB.logout();
+              }
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MiddleName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.MiddleName)
-            @Html.ValidationMessageFor(model => model.MiddleName)
-        </div>
+              // Set values
+              $('[name=FirstName]').val(user.first_name);
+              $('[name=MiddleName]').val(user.middle_name);
+              $('[name=LastName]').val(user.last_name);
+              $('[name=FacebookID]').val(user.id);
+              $('#Email').val(user.email);
+              // Set school value
+              var length = user.education ? user.education.length : 0;
+              for (var i = 0; i < length; i++) {
+                var education = user.education[i];
+                if (education.type == "High School")
+                  $('[name=School]').val(education.school.name);
+              }
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.LastName)
+              // Set Facebook info
+              $('.fbuser .image').attr('src', 'http://graph.facebook.com/' + user.id + '/picture');
+              $('.fbuser .name').text(user.name);
+              $('.fbuser').show();
+              // Hide login button
+              $('#button').hide();
+            });
+          }
+          FB.Event.subscribe('auth.login', function (response) {
+            fillUser();
+          });
+          FB.Event.subscribe('auth.logout', function (response) {
+            // Hide Facebook info
+            $('.fbuser .image').attr('src', '');
+            $('.fbuser .name').text('');
+            $('.fbuser').hide();
+            // Show login button
+            $('#button').show();
+            
+            // Reset values
+            $('[name=FacebookID]').val('');
+            $('#Email').attr('disabled', false);
+          });</script>
+        <div class="fbuser hidden clearfix">
+          <img class="image" /> <span class="name"></span>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.LastName)
-            @Html.ValidationMessageFor(model => model.LastName)
+        @Html.HiddenFor(model => model.FacebookID)
+        <div id="button">
+          <fb:login-button scope="email"></fb:login-button>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
+        <div style="margin: 10px 0px;">
+          <span>En/of je e-mail adres:</span>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.Email)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.School)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.School)
-            @Html.ValidationMessageFor(model => model.School)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FacebookID)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FacebookID)
-            @Html.ValidationMessageFor(model => model.FacebookID)
-        </div>
-
-        <p>
-            <input type="submit" value="Create" />
-        </p>
+        @Html.TextBoxFor(model => model.Email, new { placeholder = "E-mail", required = true, @class = "large" })
+      </div>
     </fieldset>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <button type="submit" class="btn primary">Registeren</button>
+    <button type="reset" class="btn cancel" onclick="FB.logout();$('.content').effect('highlight', 'slow');">Annuleren</button>
+  }
 </div>
