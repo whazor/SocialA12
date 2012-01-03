@@ -17,6 +17,7 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
+using Dymo;
 
 namespace Printer
 {
@@ -55,6 +56,7 @@ namespace Printer
     public Collection<Enrollment> list = new Collection<Enrollment>();
     string lastId = "0";
     DispatcherTimer timer = new DispatcherTimer();
+    bool start = true;
 
     public MainWindow()
     {
@@ -69,44 +71,61 @@ namespace Printer
 
     void timer_Tick(object sender, EventArgs e)
     {
-      refresh();
-    }
-    private void btnRefresh_Click(object sender, RoutedEventArgs e)
-    {
-      refresh();
-    }
-
-    void refresh()
-    {
       var client = new WebClient();
       client.DownloadDataCompleted += new DownloadDataCompletedEventHandler(client_DownloadDataCompleted);
       client.DownloadDataAsync(new Uri("http://" + tbSite.Text + "/Enrollment/Json/" + lastId));
-      btnRefresh.IsEnabled = false;
       timer.Stop();
     }
 
 
     void client_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
     {
+      if (e.Error != null) { timer.Start(); return; };
       string data = Encoding.Default.GetString(e.Result);
       //list.Clear();
       var enrollments = JsonConvert.DeserializeObject<List<Enrollment>>(data);
       foreach (var item in enrollments)
       {
-        list.Add(item);
+        list.Insert(0, item);
         lastId = item.EnrollmentID.ToString();
+        if (!start)
+        {
+          print(item);
+        }
       }
       lbLabels.Items.Refresh();
-      btnRefresh.IsEnabled = true;
       timer.Start();
+      start = false;
     }
 
-    private void btnPrint_Click(object sender, RoutedEventArgs e)
+    private void lbLabels_KeyUp(object sender, KeyEventArgs e)
+    {
+      if (lbLabels.SelectedItem == null) return;
+      if (e.Key != Key.Enter) return;
+      var enrollment = (Enrollment)lbLabels.SelectedItem;
+      print(enrollment);
+    }
+
+    private void print(Enrollment enrollment)
+    {
+      var oldtitle = window.Title;
+      window.Title = oldtitle + " (printing...)";
+      var printjob = new DymoAddIn();
+      var label = new DymoLabels();
+      if (printjob.Open(@"Person.LWL"))
+      {
+        label.SetField("Name", enrollment.FullName);
+        label.SetField("School", enrollment.School);
+        printjob.StartPrintJob();
+        printjob.Print(1, false);
+        printjob.EndPrintJob();
+        window.Title = oldtitle;
+      }
+    }
+
+    private void tbSite_TextChanged(object sender, TextChangedEventArgs e)
     {
 
     }
-
-
-
   }
 }

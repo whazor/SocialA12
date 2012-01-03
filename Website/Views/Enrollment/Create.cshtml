@@ -10,39 +10,16 @@
   {
     <fieldset>
       <div class="clearfix">
-        <label for="firstname">Wat is jouw naam?</label>
-        <div class="input">
-          @Html.TextBoxFor(model => model.FirstName, new { placeholder = "Voornaam", required = true })
-          @Html.TextBoxFor(model => model.MiddleName, new { placeholder = "Tussennaam", @class = "small" })
-          @Html.TextBoxFor(model => model.LastName, new { placeholder = "Achternaam", required = true })
-
-          @Html.ValidationMessageFor(model => model.FirstName)
-          @Html.ValidationMessageFor(model => model.MiddleName)
-          @Html.ValidationMessageFor(model => model.LastName)
+        <div style="margin: 10px 0px;">
+          <span>Automatisch invullen met FB:</span>
         </div>
-      </div>
-      <div class="clearfix">
-        <label for="school">Op welke school zit je?</label>
-        <script>
-          $(function () {
-            var scholen = [
-            "Amadeus Lyceum",
-            "College Weert"
-            ];
-            $("#school").autocomplete({ source: scholen });
-          });</script>
-        @Html.TextBoxFor(model => model.School, new { placeholder = "School", required = true, @class = "large" })
-        
-        @Html.ValidationMessageFor(model => model.School)
-      </div>
-      <div class="clearfix">
-        <label>Hoe kunnen we je bereiken?</label>
         <script>
           $(function (){ $('.fbuser').hide(); fillUser(); });
           function fillUser() {
             FB.api('/me', function (user) {
-              if (user.error) {
+              if (user.error || user.id == undefined) {
                 FB.logout();
+                return;
               }
 
               // Set values
@@ -77,7 +54,7 @@
             $('.fbuser').hide();
             // Show login button
             $('#button').show();
-            
+
             // Reset values
             $('[name=FacebookID]').val('');
             $('#Email').attr('disabled', false);
@@ -89,10 +66,44 @@
         <div id="button">
           <fb:login-button scope="email"></fb:login-button>
         </div>
-        <div style="margin: 10px 0px;">
-          <span>En/of je e-mail adres:</span>
+      </div>
+
+      <div class="clearfix">
+        <label for="firstname">Wat is jouw naam?</label>
+        <div class="input">
+          @Html.TextBoxFor(model => model.FirstName, new { placeholder = "Voornaam", required = true })
+          @Html.TextBoxFor(model => model.MiddleName, new { placeholder = "Tussennaam", @class = "small" })
+          @Html.TextBoxFor(model => model.LastName, new { placeholder = "Achternaam", required = true })
+
+          @Html.ValidationMessageFor(model => model.FirstName)
+          @Html.ValidationMessageFor(model => model.MiddleName)
+          @Html.ValidationMessageFor(model => model.LastName)
         </div>
-        @Html.TextBoxFor(model => model.Email, new { placeholder = "E-mail", required = true, @class = "large" })
+      </div>
+      <div class="clearfix">
+        <label for="school">Op welke school zit je?</label>
+        <script>
+          $(function () {
+            var scholen = [
+            "OBC Huissen",
+            "De Radar",
+            "Arentheem College",
+            "'t Venster",
+            "Maarten van Rossem",
+            "Hendrik Pierson College",
+            "Groenhorst College",
+            "Olympus College",
+            "OBC Elst"];
+            $("#School").autocomplete({ source: scholen });
+          });</script>
+        @Html.TextBoxFor(model => model.School, new { placeholder = "School", required = true, @class = "large" })
+        
+        @Html.ValidationMessageFor(model => model.School)
+      </div>
+      <div class="clearfix">
+        <label>Wat is je e-mail adres?</label>
+        @Html.TextBoxFor(model => model.Email, new { placeholder = "E-mail",  @class = "large" })
+        <!-- required = true, -->
       </div>
     </fieldset>
 

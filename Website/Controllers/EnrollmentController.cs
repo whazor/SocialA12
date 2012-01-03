@@ -9,6 +9,7 @@ using Website.Models;
 
 namespace Website.Controllers
 {
+
   public class EnrollmentController : Controller
   {
     private SocialContext db = new SocialContext();
@@ -39,6 +40,27 @@ namespace Website.Controllers
       else
         enrollments = (from e in db.Enrollments where e.EnrollmentID > id select e).ToList(); 
       return Json(enrollments.ToList(), JsonRequestBehavior.AllowGet);
+    }
+
+    public FileContentResult CSV()
+    {
+      var enrollments = db.Enrollments.ToList();
+      var csv = "Voornaam,Tussennaam,Achternaam,E-mail,School,FacebookID\n";
+
+      Func<string, string> safe = x => String.Format("'{0}'", (""+x).Replace("'", "\\'")); //.Replace("'", "\\'")
+
+      foreach (var item in enrollments)
+      {
+        csv += String.Format(
+          "{0},{1},{2},{3},{4},{5}\n",
+          safe(item.FirstName),
+          safe(item.MiddleName),
+          safe(item.LastName),
+          safe(item.Email), 
+          safe(item.School),
+          safe(item.FacebookID));
+      }
+      return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Enrollments.csv");
     }
 
     // GET: /Enrollment/Details/5
@@ -77,7 +99,7 @@ namespace Website.Controllers
       return View(enrollment);
     }
 
-    //
+    //c
     // POST: /Enrollment/Edit/5
 
     [HttpPost]

@@ -12,8 +12,8 @@ namespace Website.Controllers
   [Authorize]
   public class AccountController : Controller
   {
-    private const string logoffUrl = "http://localhost:1041/";
-    private const string redirectUrl = "http://localhost:1041/Account/OAuth";
+    private const string logoffUrl = "http://a12.mycel.nl/";
+    private const string redirectUrl = "http://a12.mycel.nl/Account/OAuth";
     //
     // GET: /Account/LogOn
     [AllowAnonymous]
